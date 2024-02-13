@@ -1,0 +1,43 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "name",
+      "id"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      }
+    }
+  }
+}
+
+
+//{
+//  "type": "array",
+//  "default": [],
+//  "title": "Root Schema",
+//  "items": {
+//    "type": "object",
+//    "default": {},
+//    "title": "A Schema",
+//    "required": [ "id", "name" ],
+//    "properties": {
+//      "id": {
+//        "type": "string",
+//        "default": "",
+//        "title": "The id Schema"
+//      },
+//      "name": {
+//        "type": "string",
+//        "default": "",
+//        "title": "The name Schema"
+//      }
+//    }
+//  }
+//}
