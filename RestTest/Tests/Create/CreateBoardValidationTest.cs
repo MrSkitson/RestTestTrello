@@ -18,9 +18,9 @@ namespace RestTest.Tests.Create
         [TestCaseSource(typeof(BoardNameValidationArgumentProvider))]
         public async Task CheckCreateBoardWithInvalidName(IDictionary<string, object> bodyParams)
         {
-            var request = RequestWithAuth(BoardsEndpoints.CreateBoardUrl)
+            var request = RequestWithAuth(BoardsEndpoints.CreateBoardUrl, Method.Post)
                 .AddJsonBody(bodyParams);
-            var response = await _client.ExecutePostAsync(request);
+            var response = await _client.ExecuteAsync(request);
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
             Assert.AreEqual("{\"message\":\"invalid value for name\",\"error\":\"ERROR\"}", response.Content);
@@ -31,11 +31,11 @@ namespace RestTest.Tests.Create
         public async Task CheckCreateBoardWithInvalidAuth(AuthValidationArgumentholder validationArguments)
         {
             var boardName = "New Board";
-            var request = RequestWithoutAuth(BoardsEndpoints.CreateBoardUrl)
+            var request = RequestWithoutAuth(BoardsEndpoints.CreateBoardUrl, Method.Post)
              .AddOrUpdateParameters(validationArguments.AuthParams)
              .AddJsonBody(new Dictionary<string, string> { { "name", boardName } });
 
-            var response = await _client.ExecutePostAsync(request);
+            var response = await _client.ExecuteAsync(request);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
             Assert.That(response.Content, Is.EqualTo(validationArguments.ErrorMessage));
            

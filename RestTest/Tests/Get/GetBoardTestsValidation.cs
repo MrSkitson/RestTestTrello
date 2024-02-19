@@ -17,11 +17,11 @@ namespace RestTest.Tests.Get
         [TestCaseSource(typeof(AuthValidationArgumentProvider))]
         public async Task CheckGetBoardWithInvalidAuth(AuthValidationArgumentholder validationArguments)
         {
-            var request = RequestWithoutAuth(BoardsEndpoints.GetBoardUrl)
+            var request = RequestWithoutAuth(BoardsEndpoints.GetBoardUrl, Method.Get)
 
             .AddOrUpdateParameters(validationArguments.AuthParams)
             .AddUrlSegment("id", UrlParamValues.ExistingBoardId);
-            var response = await _client.ExecuteGetAsync(request);
+            var response = await _client.ExecuteAsync(request);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
             Assert.That(response.Content, Is.EqualTo(validationArguments.ErrorMessage));
           
@@ -30,10 +30,10 @@ namespace RestTest.Tests.Get
         [Test]
         public async Task CheckGetBoardWithAnotherUserCredentials()
         {
-            var request = RequestWithAuth(BoardsEndpoints.GetBoardUrl)
+            var request = RequestWithAuth(BoardsEndpoints.GetBoardUrl, Method.Get)
              .AddOrUpdateParameters(UrlParamValues.AuthQueryParams)
                 .AddUrlSegment("id", UrlParamValues.ExistingBoardId);
-            var response = await _client.ExecuteGetAsync(request);
+            var response = await _client.ExecuteAsync(request);
             //Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
         }

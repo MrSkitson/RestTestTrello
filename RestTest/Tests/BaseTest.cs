@@ -15,13 +15,13 @@ namespace RestTest.Tests
         public static void InitializeRestClient() =>
             _client = new RestClient("https://api.trello.com");
 
-        protected RestRequest RequestWithAuth(string url) =>
-           RequestWithoutAuth(url)
+        protected RestRequest RequestWithAuth(string url, Method method) =>
+           RequestWithoutAuth(url, method)
                .AddOrUpdateParameters(UrlParamValues.AuthQueryParams);
-        protected RestRequest RequestWithoutAuth(string url) =>
-         new RestRequest(url);
-        protected RestRequest RequestWithInvalidAuth(string url) =>
-            RequestWithoutAuth(url)
-                .AddOrUpdateParameters(UrlParamValues.InvalidAuthQueryParams);
+        protected RestRequest RequestWithoutAuth(string url, Method method) =>
+         new RestRequest(url, method)
+            .AddOrUpdateParameters(UrlParamValues.InvalidAuthQueryParams);
+      
+                
     }
 }

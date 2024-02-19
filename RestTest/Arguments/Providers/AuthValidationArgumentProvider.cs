@@ -39,7 +39,7 @@ namespace RestTest.Arguments.Providers
                     {
                         new MyParameter("token", UrlParamValues.InvalidToken, ParameterType.QueryString)
                     },
-                     ErrorMessage = "unauthorized permission requested",
+                     ErrorMessage = "invalid key",
                     //ErrorMessage ="{\"message\":\"Board must be in a team — specify an idOrganization\"}",
                 }
             };
@@ -50,7 +50,7 @@ namespace RestTest.Arguments.Providers
                 { 
                     
                     AuthParams = ArraySegment<MyParameter>.Empty,
-                     ErrorMessage = "unauthorized permission requested",
+                     ErrorMessage = "invalid key",
                     //ErrorMessage ="{\"message\":\"Board must be in a team — specify an idOrganization\"}"
                 }
 

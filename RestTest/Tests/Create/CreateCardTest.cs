@@ -15,17 +15,17 @@ namespace RestTest.Tests.Create
         private string _createdCardId;
 
         [Test]
-        public void CheckCreateCard()
+        public async Task CheckCreateCard()
         {
             var cardName = "New Card" + DateTime.Now.ToLongTimeString();
 
-            var request = RequestWithAuth(CardsEndPoints.CreateCardUrl)
+            var request = RequestWithAuth(CardsEndPoints.CreateCardUrl, Method.Post)
                 .AddJsonBody(new Dictionary<string, string>
                 {
                     {"name", cardName},
                     {"idList", UrlParamValues.ExistingListId}
                 });
-            var response = _client.Post(request);
+            var response = await _client.ExecuteAsync(request);
 
             var responseContent = JToken.Parse(response.Content);
 
@@ -34,20 +34,20 @@ namespace RestTest.Tests.Create
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(cardName, responseContent.SelectToken("name").ToString());
 
-            request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl)
+            request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl, Method.Get)
                 .AddUrlSegment("list_id", UrlParamValues.ExistingListId);
-            response = _client.Get(request);
+            response =await _client.ExecuteAsync(request);
             responseContent = JToken.Parse(response.Content);
             Assert.True(responseContent.Children().Select(token => token.SelectToken("name").ToString()).Contains(cardName));
         }
 
         [TearDown]
-        public void DeleteCreatedCard()
+        public async Task DeleteCreatedCard()
         {
            
-                var request = RequestWithAuth(CardsEndPoints.DeleteCardUrl)
+                var request = RequestWithAuth(CardsEndPoints.DeleteCardUrl, Method.Delete)
                     .AddUrlSegment("id", _createdCardId);
-                var response = _client.Delete(request);
+                var response = await _client.ExecuteAsync(request);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             
         }

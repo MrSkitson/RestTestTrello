@@ -12,6 +12,9 @@ namespace RestTest.Consts
         public const string ExistingCardId = "5df0e93e13a8de6d77bd5498";
         public const string UserName = "mr_skit";
 
+        public const string BoardIdToUpdate = "65cf7da9c1c5c45c8dd935fd";
+        public const string CardIdToUpdate = "65cf7fc77d819a334ff97ea5";
+
         public const string ValidKey = "78cc9dcd0fe568a68b5e7d8cdfab098c";
         public const string InvalidKey = "78cc9dcd0fe568a68b5e7d8cdfab098e";
         public const string ValidToken = "ATTAa93f8c08f0535703af8d7bb92b0a2aa7b113474a74bad30fc61110df1b53b87dC13D048B";

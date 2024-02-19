@@ -13,13 +13,13 @@ public class GetBoardTests : BaseTest
 
 
     [Test]
-    public void GetBoards()
+    public async Task GetBoards()
     {
-        var request = RequestWithAuth(BoardsEndpoints.GetAllBoardUrl)
+        var request = RequestWithAuth(BoardsEndpoints.GetAllBoardUrl, Method.Get)
             .AddQueryParameter("field", "id, name")
             .AddUrlSegment("member", UrlParamValues.UserName);//path parametr
 
-        var response = _client.Get(request);
+        var response = await _client.ExecuteAsync(request);
 
         Console.WriteLine(response.Content);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -29,12 +29,12 @@ public class GetBoardTests : BaseTest
     }
 
     [Test]
-    public void CheckGetBoard()
+    public async Task CheckGetBoard()
     {
-        var request = RequestWithAuth(BoardsEndpoints.GetBoardUrl)
+        var request = RequestWithAuth(BoardsEndpoints.GetBoardUrl, Method.Get)
           .AddQueryParameter("field", "id, name")
             .AddUrlSegment("id", UrlParamValues.ExistingBoardId);
-        var response = _client.Get(request);
+        var response = await _client.ExecuteAsync(request);
         Console.WriteLine(response.Content);
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

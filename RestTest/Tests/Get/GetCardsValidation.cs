@@ -18,13 +18,13 @@ namespace RestTest.Tests.Get
     {
 
         [Test]
-        public void GetCards()
+        public async Task GetCards()
         {
-            var request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl)
+            var request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl, Method.Get)
                 .AddQueryParameter("field", "id, name")
                 .AddUrlSegment("list_id", UrlParamValues.ExistingListId);
 
-            var response = _client.Get(request);
+            var response = await _client.ExecuteAsync(request);
             var responseContent = JToken.Parse(response.Content);
             Console.WriteLine(response.Content);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -33,13 +33,13 @@ namespace RestTest.Tests.Get
 
         }
         [Test]
-        public void CheckGetCard()
+        public async Task CheckGetCard()
         {
-            var request = RequestWithAuth(CardsEndPoints.GetCardUrl)
+            var request = RequestWithAuth(CardsEndPoints.GetCardUrl, Method.Get)
                 .AddQueryParameter("field", "id, name")
                 .AddUrlSegment("id", UrlParamValues.ExistingCardId);
 
-            var response = _client.Get(request);
+            var response = await _client.ExecuteAsync(request);
             var responseContent = JToken.Parse(response.Content);
             Console.WriteLine(response.Content);
 
@@ -61,9 +61,9 @@ namespace RestTest.Tests.Get
             //Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             // Assert.AreEqual("invalid id", response.Content);
 
-            var request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl)
+            var request = RequestWithAuth(CardsEndPoints.GetAllCardsUrl, Method.Get)
                .AddOrUpdateParameters(validationArguments.PathParams);
-            var response = await _client.ExecuteGetAsync(request);
+            var response = await _client.ExecuteAsync(request);
             Assert.AreEqual(validationArguments.StatusCode, response.StatusCode);
             Assert.AreEqual(validationArguments.ErrorMessage, response.Content);
         }
@@ -72,10 +72,10 @@ namespace RestTest.Tests.Get
         [TestCaseSource(typeof(AuthCardsValidationArgumentProvider))]
         public async Task CheckGetCardWithInvalidAuth(AuthCardsValidationArgumentholder validationArguments)
         {
-            var request = RequestWithInvalidAuth(CardsEndPoints.GetCardUrl)
+            var request = RequestWithoutAuth(CardsEndPoints.GetCardUrl, Method.Get)
                 .AddUrlSegment("id", UrlParamValues.ExistingListId)
               .AddOrUpdateParameters(validationArguments.AuthParams);
-            var response = await _client.ExecuteGetAsync(request);
+            var response = await _client.ExecuteAsync(request);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
             Assert.AreEqual("invalid key", response.Content);
         }
