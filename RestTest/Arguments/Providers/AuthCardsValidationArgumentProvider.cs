@@ -38,7 +38,7 @@ namespace RestTest.Arguments.Providers
                     {
                         new MyParameter("token", UrlParamValues.InvalidToken, ParameterType.QueryString, false)
                     },
-                     ErrorMessage = "unauthorized card permission requested",
+                     ErrorMessage = "invalid key",
                 }
             };
             yield return new object[]
@@ -47,7 +47,7 @@ namespace RestTest.Arguments.Providers
                 {
                    
                     AuthParams = ArraySegment<Parameter>.Empty,
-                    ErrorMessage = "unauthorized card permission requested"
+                    ErrorMessage = "invalid key"
                 },
                  
             };

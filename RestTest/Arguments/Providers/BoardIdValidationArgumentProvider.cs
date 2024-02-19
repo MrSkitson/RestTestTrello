@@ -24,7 +24,7 @@ namespace RestTest.Arguments.Providers
             {
                 new BoardIdValidationArgumentsHolder
                 {
-                    ErrorMessage = "The requested resource was not found.",
+                    ErrorMessage = "invalid id",
                     StatusCode = HttpStatusCode.BadRequest,
                     PathParams = new[] {new MyParameter("id", "60d847d9aad2437cb984f8e1", ParameterType.UrlSegment, false)}
                 }

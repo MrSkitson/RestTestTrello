@@ -14,17 +14,17 @@ namespace RestTest.Tests.Create
     {
         private string _createdBoardId;
         [Test]
-        public void CheckCreateBoard()
+        public async Task CheckCreateBoard()
         {
             var boardName = "New Board" + DateTime.Now.ToLongTimeString();
 
-            var request = RequestWithAuth(BoardsEndpoints.CreateBoardUrl)
+            var request = RequestWithAuth(BoardsEndpoints.CreateBoardUrl, Method.Post)
                 .AddJsonBody(new Dictionary<string, string> /*{{ "name", boardName }});*/
             {
                 { "name", boardName},
                     { "id", UrlParamValues.ExistingBoardId}
             });
-            var response = _client.Post(request);
+            var response =  await _client.ExecuteAsync(request);
 
             Console.WriteLine($"Response Content after creating board: {response.Content}");
             var responseContent = JToken.Parse(response.Content);
@@ -35,23 +35,23 @@ namespace RestTest.Tests.Create
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardName, responseContent.SelectToken("name").ToString());
 
-            request = RequestWithAuth(BoardsEndpoints.GetAllBoardUrl)
+            request = RequestWithAuth(BoardsEndpoints.GetAllBoardUrl, Method.Get)
                 // .AddQueryParameter("fields", "id,name")
                 .AddUrlSegment("id", UrlParamValues.ExistingBoardId)
                 .AddUrlSegment("member", UrlParamValues.UserName);
-            response = _client.Get(request);
+            response = await _client.ExecuteAsync(request);
             responseContent = JToken.Parse(response.Content);
             Assert.True(responseContent.Children().Select(token => token.SelectToken("name").ToString()).Contains(boardName));
 
         }
         [TearDown]
-        public void DeleteCreatedBoard()
+        public async Task DeleteCreatedBoard()
         {
            
                 Console.WriteLine($"Deleting board with ID: {_createdBoardId}");
-                var requset = RequestWithAuth(BoardsEndpoints.DeleteBoardUrl)
+                var requset = RequestWithAuth(BoardsEndpoints.DeleteBoardUrl, Method.Delete)
                  .AddUrlSegment("id", _createdBoardId);
-                var response = _client.Delete(requset);
+                var response = await _client.ExecuteAsync(requset);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
 

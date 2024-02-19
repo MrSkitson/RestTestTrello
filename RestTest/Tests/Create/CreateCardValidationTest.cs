@@ -17,9 +17,9 @@ namespace RestTest.Tests.Create
         [TestCaseSource(typeof(CardBodyValidationArgumentsProvider))]
         public async Task CheckCreateCardWithInvalidName(CardBodyValidationArgumentsHolder validationArguments)
         {
-            var request = RequestWithAuth(CardsEndPoints.CreateCardUrl)
+            var request = RequestWithAuth(CardsEndPoints.CreateCardUrl, Method.Post)
                 .AddJsonBody(validationArguments.BodyParams);
-            var response = await _client.ExecutePostAsync(request);
+            var response = await _client.ExecuteAsync(request);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.AreEqual(validationArguments.ErrorMessage, response.Content);
@@ -29,14 +29,14 @@ namespace RestTest.Tests.Create
         [TestCaseSource(typeof(AuthCardsValidationArgumentProvider))]
         public async Task CheckCreateCardWithInvalidAuth(AuthCardsValidationArgumentholder validationArguments)
         {
-            var request = RequestWithoutAuth(CardsEndPoints.CreateCardUrl)
+            var request = RequestWithoutAuth(CardsEndPoints.CreateCardUrl, Method.Post)
                 .AddOrUpdateParameters(validationArguments.AuthParams)
                 .AddJsonBody(new Dictionary<string, string>
                 {
                     {"name", "New item"},
                     {"idList", UrlParamValues.ExistingListId}
                 });
-            var response = await _client.ExecutePostAsync(request);
+            var response = await _client.ExecuteAsync(request);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
             Assert.AreEqual(validationArguments.ErrorMessage, response.Content);
         }
